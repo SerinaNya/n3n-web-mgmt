@@ -6,7 +6,26 @@ A comprehensive web management tool for n3n, built with React, shadcn/ui, and Vi
 
 ```
 n3n-web-mgmt/
+├── public/             # Static assets
+│   └── vite.svg
+├── screenshots/        # Screenshots for README
+│   ├── edges-page.png
+│   └── stats-page.png
 ├── src/
+│   ├── assets/         # Project assets
+│   │   └── react.svg
+│   ├── components/     # React components
+│   │   ├── ui/                # shadcn/ui components
+│   │   ├── Navbar.tsx         # Navigation bar component
+│   │   ├── RootLayout.tsx     # Root layout component
+│   │   ├── TimeAgo.tsx        # Time ago component
+│   │   └── theme-provider.tsx # Theme provider component
+│   ├── i18n/           # Internationalization files
+│   │   ├── en.json            # English translations
+│   │   ├── zh-CN.json         # Chinese (Simplified) translations
+│   │   └── index.ts           # i18n configuration
+│   ├── lib/            # Utility functions
+│   │   └── utils.ts            # Utility functions
 │   ├── pages/          # Page components
 │   │   ├── HomePage.tsx       # Main landing page
 │   │   ├── EdgesPage.tsx      # Network edges table page
@@ -15,15 +34,23 @@ n3n-web-mgmt/
 │   │   └── StatsPage.tsx      # Network statistics page
 │   ├── routes/         # Router configuration
 │   │   └── index.tsx          # Main router setup
-│   ├── components/     # React components
-│   │   ├── ui/                # shadcn/ui components
-│   │   └── theme-provider.tsx
-│   ├── lib/            # Utility functions
 │   ├── App.tsx         # Main App component
-│   ├── main.tsx        # Client entry point
-│   └── index.css       # Global styles
-├── vite.config.ts      # Vite configuration
+│   ├── index.css       # Global styles
+│   └── main.tsx        # Client entry point
+├── .gitignore          # Git ignore file
+├── .prettierignore     # Prettier ignore file
+├── .prettierrc         # Prettier configuration
+├── components.json     # shadcn/ui configuration
+├── eslint.config.js    # ESLint configuration
+├── index.html          # HTML entry point
 ├── package.json        # Project dependencies
+├── pnpm-lock.yaml      # pnpm lock file
+├── pnpm-workspace.yaml # pnpm workspace configuration
+├── skills-lock.json    # Skills lock file
+├── tsconfig.app.json   # TypeScript app configuration
+├── tsconfig.json       # TypeScript configuration
+├── tsconfig.node.json  # TypeScript node configuration
+├── vite.config.ts      # Vite configuration
 └── README.md           # This file
 ```
 
@@ -38,6 +65,7 @@ n3n-web-mgmt/
 - **Responsive design** using Tailwind CSS
 - **Error handling** with sonner toast notifications
 - **Dark mode support** with automatic detection and keyboard shortcut (press <kbd>d</kbd> to toggle)
+- **Internationalization (i18n)** support with English and Chinese translations
 
 ## Getting Started
 
@@ -80,6 +108,25 @@ The application will be available at http://localhost:5173 (development) or http
 - **Supernodes Page**: Table displaying supernodes with real-time data
 - **Communities Page**: Table displaying communities with real-time data
 - **Stats Page**: Network statistics with charts and metrics
+
+## Internationalization (i18n)
+
+The application supports internationalization with English and Chinese translations. It uses `react-i18next` for translation management.
+
+### Translation Files
+
+Translation files are located in the `src/i18n/` directory:
+
+- `en.json` - English translations
+- `zh-CN.json` - Chinese (Simplified) translations
+
+### Language Detection
+
+The application automatically detects the user's browser language and sets the appropriate locale. If the detected language is not supported, it falls back to English.
+
+### Adding New Translations
+
+To add new translations, update the corresponding JSON files in the `src/i18n/` directory. Follow the existing structure and add new keys as needed.
 
 ## API Integration
 
