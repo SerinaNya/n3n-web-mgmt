@@ -12,6 +12,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { toast } from "sonner"
+import { useTranslation } from "react-i18next"
 
 type Community = {
   community: string
@@ -32,6 +33,8 @@ async function fetchCommunitiesData(): Promise<Community[]> {
 }
 
 export function CommunitiesPage() {
+  const { t } = useTranslation()
+  
   const {
     data: communities = [],
     isLoading: loading,
@@ -45,16 +48,16 @@ export function CommunitiesPage() {
   // 监听错误状态，显示 toast 错误提示
   useEffect(() => {
     if (error) {
-      toast.error("Failed to load communities data")
+      toast.error(t("errors.loadCommunities"))
     }
-  }, [error])
+  }, [error, t])
 
   return (
     <div className="p-6">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Communities</h1>
+        <h1 className="text-2xl font-bold">{t("communities.title")}</h1>
         <Button onClick={() => refetch()} disabled={loading}>
-          {loading ? "Fetching..." : "Refresh"}
+          {loading ? t("common.fetching") : t("common.refresh")}
         </Button>
       </div>
 
@@ -62,10 +65,10 @@ export function CommunitiesPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Community</TableHead>
-              <TableHead>IP Address</TableHead>
-              <TableHead className="text-center">Purgeable</TableHead>
-              <TableHead className="text-center">Federation</TableHead>
+              <TableHead>{t("communities.community")}</TableHead>
+              <TableHead>{t("communities.ipAddress")}</TableHead>
+              <TableHead className="text-center">{t("communities.purgeable")}</TableHead>
+              <TableHead className="text-center">{t("communities.federation")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -94,12 +97,12 @@ export function CommunitiesPage() {
                     <TableCell>{community.ip4addr}</TableCell>
                     <TableCell className="text-center">
                       <Badge className={community.purgeable === 1 ? "bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300" : "bg-gray-50 text-gray-700 dark:bg-gray-950 dark:text-gray-300"}>
-                        {community.purgeable === 1 ? "Yes" : "No"}
+                        {community.purgeable === 1 ? t("communities.yes") : t("communities.no")}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-center">
                       <Badge className={community.is_federation === 1 ? "bg-blue-50 text-blue-700 dark:bg-blue-950 dark:text-blue-300" : "bg-gray-50 text-gray-700 dark:bg-gray-950 dark:text-gray-300"}>
-                        {community.is_federation === 1 ? "Yes" : "No"}
+                        {community.is_federation === 1 ? t("communities.yes") : t("communities.no")}
                       </Badge>
                     </TableCell>
                   </TableRow>

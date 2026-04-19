@@ -28,6 +28,7 @@ import {
 import { MoreHorizontalIcon } from "lucide-react"
 import { toast } from "sonner"
 import { TimeAgo } from "@/components/TimeAgo"
+import { useTranslation } from "react-i18next"
 
 type Edge = {
   mode: string
@@ -60,6 +61,8 @@ async function fetchEdgesData(): Promise<Edge[]> {
 }
 
 export function EdgesPage() {
+  const { t } = useTranslation()
+  
   const {
     data: edges = [],
     isLoading: loading,
@@ -73,9 +76,9 @@ export function EdgesPage() {
   // 监听错误状态，显示 toast 错误提示
   useEffect(() => {
     if (error) {
-      toast.error("Failed to load edges data")
+      toast.error(t("errors.loadEdges"))
     }
-  }, [error])
+  }, [error, t])
 
   function getBadgeClass(mode: string) {
     switch (mode) {
@@ -93,9 +96,9 @@ export function EdgesPage() {
   return (
     <div className="p-6">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Edges</h1>
+        <h1 className="text-2xl font-bold">{t("edges.title")}</h1>
         <Button onClick={() => refetch()} disabled={loading}>
-          {loading ? "Fetching..." : "Refresh"}
+          {loading ? t("common.fetching") : t("common.refresh")}
         </Button>
       </div>
 
@@ -103,14 +106,14 @@ export function EdgesPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-center w-16">Mode</TableHead>
-              <TableHead>Community</TableHead>
-              <TableHead>IP Address</TableHead>
-              <TableHead>MAC Address</TableHead>
-              <TableHead>Socket Address</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Last Seen</TableHead>
-              <TableHead className="text-right w-20">Properties</TableHead>
+              <TableHead className="text-center w-16">{t("edges.mode")}</TableHead>
+              <TableHead>{t("edges.community")}</TableHead>
+              <TableHead>{t("edges.ipAddress")}</TableHead>
+              <TableHead>{t("edges.macAddress")}</TableHead>
+              <TableHead>{t("edges.socketAddress")}</TableHead>
+              <TableHead>{t("edges.description")}</TableHead>
+              <TableHead>{t("edges.lastSeen")}</TableHead>
+              <TableHead className="text-right w-20">{t("edges.properties")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -169,14 +172,14 @@ export function EdgesPage() {
                             className="size-8"
                           >
                             <MoreHorizontalIcon />
-                            <span className="sr-only">View Edge Details</span>
+                            <span className="sr-only">{t("edges.viewDetails")}</span>
                           </Button>
                         </DrawerTrigger>
                         <DrawerContent className="sm:max-w-125">
                           <DrawerHeader>
-                            <DrawerTitle>Edge Properties</DrawerTitle>
+                            <DrawerTitle>{t("edges.edgeProperties")}</DrawerTitle>
                             <DrawerDescription>
-                              All properties for this edge
+                              {t("edges.allProperties")}
                             </DrawerDescription>
                           </DrawerHeader>
                           <div className="no-scrollbar space-y-4 overflow-y-auto">
@@ -187,37 +190,37 @@ export function EdgesPage() {
                                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Mode
+                                        {t("edges.mode")}
                                       </p>
                                       <p className="mt-1"><Badge className={getBadgeClass(edge.mode)}>{edge.mode}</Badge></p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Community
+                                        {t("edges.community")}
                                       </p>
                                       <p className="mt-1">{edge.community}</p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        IP Address
+                                        {t("edges.ipAddress")}
                                       </p>
                                       <p className="mt-1">{edge.ip4addr}</p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        MAC Address
+                                        {t("edges.macAddress")}
                                       </p>
                                       <p className="mt-1">{edge.macaddr}</p>
                                     </div>
                                     <div className="col-span-2">
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Socket Address
+                                        {t("edges.socketAddress")}
                                       </p>
                                       <p className="mt-1">{edge.sockaddr}</p>
                                     </div>
                                     <div className="col-span-2">
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Preferred Socket Address
+                                        {t("edges.preferredSocketAddress")}
                                       </p>
                                       <p className="mt-1">
                                         {edge.prefered_sockaddr}
@@ -225,43 +228,43 @@ export function EdgesPage() {
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Description
+                                        {t("edges.description")}
                                       </p>
                                       <p className="mt-1">{edge.desc}</p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Version
+                                        {t("edges.version")}
                                       </p>
                                       <p className="mt-1">{edge.version}</p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Purgeable
+                                        {t("edges.purgeable")}
                                       </p>
-                                      <p className="mt-1">{edge.purgeable === 1 ? "Yes" : "No"}</p>
+                                      <p className="mt-1">{edge.purgeable === 1 ? t("edges.yes") : t("edges.no")}</p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Local
+                                        {t("edges.local")}
                                       </p>
-                                      <p className="mt-1">{edge.local === 1 ? "Yes" : "No"}</p>
+                                      <p className="mt-1">{edge.local === 1 ? t("edges.yes") : t("edges.no")}</p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Timeout
+                                        {t("edges.timeout")}
                                       </p>
-                                      <p className="mt-1">{edge.timeout} s</p>
+                                      <p className="mt-1">{edge.timeout} {t("edges.seconds")}</p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Uptime
+                                        {t("edges.uptime")}
                                       </p>
                                       <p className="mt-1">{edge.uptime}</p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Time Allocated
+                                        {t("edges.timeAllocated")}
                                       </p>
                                       <p className="mt-1">
                                         <TimeAgo timestamp={edge.time_alloc} />
@@ -269,7 +272,7 @@ export function EdgesPage() {
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Last P2P
+                                        {t("edges.lastP2P")}
                                       </p>
                                       <p className="mt-1">
                                         <TimeAgo timestamp={edge.last_p2p} />
@@ -277,7 +280,7 @@ export function EdgesPage() {
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Last Sent Query
+                                        {t("edges.lastSentQuery")}
                                       </p>
                                       <p className="mt-1">
                                         <TimeAgo timestamp={edge.last_sent_query} />
@@ -285,7 +288,7 @@ export function EdgesPage() {
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Last Seen
+                                        {t("edges.lastSeen")}
                                       </p>
                                       <p className="mt-1">
                                         <TimeAgo timestamp={edge.last_seen} />
@@ -301,7 +304,7 @@ export function EdgesPage() {
                           </div>
                           <DrawerFooter>
                             <DrawerClose asChild>
-                              <Button variant="outline">Close</Button>
+                              <Button variant="outline">{t("common.close")}</Button>
                             </DrawerClose>
                           </DrawerFooter>
                         </DrawerContent>

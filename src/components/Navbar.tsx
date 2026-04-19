@@ -4,9 +4,11 @@ import {
   NavigationMenuLink,
   NavigationMenuList,
 } from "@/components/ui/navigation-menu"
+import { useTranslation } from "react-i18next"
 
 export function Navbar() {
   const location = useLocation()
+  const { t } = useTranslation()
 
   const isActive = (path: string) => {
     return location.pathname === path
@@ -14,19 +16,19 @@ export function Navbar() {
 
   const pages = [
     {
-      name: "Edges",
+      name: t("edges.title"),
       path: "/edges",
     },
     {
-      name: "Supernodes",
+      name: t("supernodes.title"),
       path: "/supernodes",
     },
     {
-      name: "Communities",
+      name: t("communities.title"),
       path: "/communities",
     },
     {
-      name: "Stats",
+      name: t("stats.title"),
       path: "/stats",
     },
   ]
@@ -36,7 +38,7 @@ export function Navbar() {
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-4">
           <Link to="/" className="font-bold">
-            n3n Web Management
+            {t("common.appName")}
           </Link>
         </div>
         <NavigationMenu>

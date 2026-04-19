@@ -1,17 +1,19 @@
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { DateTime } from "luxon"
-
+import { useTranslation } from "react-i18next"
 interface TimeAgoProps {
   timestamp: number
 }
 
 export function TimeAgo({ timestamp }: TimeAgoProps) {
+  const { t } = useTranslation()
+  
   if (timestamp === 0) {
     return (
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
-            <span className="italic">Never</span>
+            <span className="italic">{t("common.never")}</span>
           </TooltipTrigger>
         </Tooltip>
       </TooltipProvider>

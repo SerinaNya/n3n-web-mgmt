@@ -26,6 +26,7 @@ import { MoreHorizontalIcon } from "lucide-react"
 import { toast } from "sonner"
 import { TimeAgo } from "@/components/TimeAgo"
 import { Duration } from "luxon"
+import { useTranslation } from "react-i18next"
 
 type Supernode = {
   version: string
@@ -50,6 +51,8 @@ async function fetchSupernodesData(): Promise<Supernode[]> {
 }
 
 export function SupernodesPage() {
+  const { t } = useTranslation()
+  
   const {
     data: supernodes = [],
     isLoading: loading,
@@ -63,16 +66,16 @@ export function SupernodesPage() {
   // 监听错误状态，显示 toast 错误提示
   useEffect(() => {
     if (error) {
-      toast.error("Failed to load supernodes data")
+      toast.error(t("errors.loadSupernodes"))
     }
-  }, [error])
+  }, [error, t])
 
   return (
     <div className="p-6">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Supernodes</h1>
+        <h1 className="text-2xl font-bold">{t("supernodes.title")}</h1>
         <Button onClick={() => refetch()} disabled={loading}>
-          {loading ? "Fetching..." : "Refresh"}
+          {loading ? t("common.fetching") : t("common.refresh")}
         </Button>
       </div>
 
@@ -80,12 +83,12 @@ export function SupernodesPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-20 text-center">Status</TableHead>
-              <TableHead>MAC Address</TableHead>
-              <TableHead>Socket Address</TableHead>
-              <TableHead>Selection</TableHead>
-              <TableHead>Last Seen</TableHead>
-              <TableHead className="w-20 text-right">Properties</TableHead>
+              <TableHead className="text-center w-20">{t("supernodes.status")}</TableHead>
+              <TableHead>{t("supernodes.macAddress")}</TableHead>
+              <TableHead>{t("supernodes.socketAddress")}</TableHead>
+              <TableHead>{t("supernodes.selection")}</TableHead>
+              <TableHead>{t("supernodes.lastSeen")}</TableHead>
+              <TableHead className="text-right w-20">{t("supernodes.properties")}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -119,7 +122,7 @@ export function SupernodesPage() {
                     <TableCell className="text-center">
                       {supernode.current === 1 && (
                         <Badge className="bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300">
-                          Active
+                          {t("supernodes.active")}
                         </Badge>
                       )}
                     </TableCell>
@@ -130,7 +133,7 @@ export function SupernodesPage() {
                       <TimeAgo timestamp={supernode.last_seen} />
                     </TableCell>
                     <TableCell className="text-right">
-                      <Drawer direction="right" handleOnly={true}>
+                      <Drawer direction="right">
                         <DrawerTrigger asChild>
                           <Button
                             variant="ghost"
@@ -139,15 +142,15 @@ export function SupernodesPage() {
                           >
                             <MoreHorizontalIcon />
                             <span className="sr-only">
-                              View Supernode Details
+                              {t("supernodes.viewDetails")}
                             </span>
                           </Button>
                         </DrawerTrigger>
                         <DrawerContent className="sm:max-w-125">
                           <DrawerHeader>
-                            <DrawerTitle>Supernode Properties</DrawerTitle>
+                            <DrawerTitle>{t("supernodes.supernodeProperties")}</DrawerTitle>
                             <DrawerDescription>
-                              All properties for this supernode
+                              {t("supernodes.allProperties")}
                             </DrawerDescription>
                           </DrawerHeader>
                           <div className="no-scrollbar space-y-4 overflow-y-auto">
@@ -157,7 +160,7 @@ export function SupernodesPage() {
                                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Version
+                                        {t("supernodes.version")}
                                       </p>
                                       <p className="mt-1">
                                         {supernode.version}
@@ -165,25 +168,25 @@ export function SupernodesPage() {
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Current
+                                        {t("supernodes.current")}
                                       </p>
                                       <p className="mt-1">
-                                        {supernode.current === 1 ? "Yes" : "No"}
+                                        {supernode.current === 1 ? t("supernodes.yes") : t("supernodes.no")}
                                       </p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Purgeable
+                                        {t("supernodes.purgeable")}
                                       </p>
                                       <p className="mt-1">
                                         {supernode.purgeable === 1
-                                          ? "Yes"
-                                          : "No"}
+                                          ? t("supernodes.yes")
+                                          : t("supernodes.no")}
                                       </p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        MAC Address
+                                        {t("supernodes.macAddress")}
                                       </p>
                                       <p className="mt-1">
                                         {supernode.macaddr}
@@ -191,7 +194,7 @@ export function SupernodesPage() {
                                     </div>
                                     <div className="col-span-2">
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Socket Address
+                                        {t("supernodes.socketAddress")}
                                       </p>
                                       <p className="mt-1">
                                         {supernode.sockaddr}
@@ -199,7 +202,7 @@ export function SupernodesPage() {
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Selection
+                                        {t("supernodes.selection")}
                                       </p>
                                       <p className="mt-1">
                                         {supernode.selection}
@@ -207,7 +210,7 @@ export function SupernodesPage() {
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Last Seen
+                                        {t("supernodes.lastSeen")}
                                       </p>
                                       <p className="mt-1">
                                         <TimeAgo
@@ -217,7 +220,7 @@ export function SupernodesPage() {
                                     </div>
                                     <div className="col-span-2">
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Uptime
+                                        {t("supernodes.uptime")}
                                       </p>
                                       <p className="mt-1">
                                         {Duration.fromMillis(
@@ -245,7 +248,7 @@ export function SupernodesPage() {
                           </div>
                           <DrawerFooter>
                             <DrawerClose asChild>
-                              <Button variant="outline">Close</Button>
+                              <Button variant="outline">{t("common.close")}</Button>
                             </DrawerClose>
                           </DrawerFooter>
                         </DrawerContent>
