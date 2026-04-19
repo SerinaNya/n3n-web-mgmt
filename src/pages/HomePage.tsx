@@ -8,7 +8,7 @@ export function HomePage() {
   return (
     <div className="my-auto flex h-full flex-col items-center justify-center p-6">
       <div className="max-w-2xl text-center">
-        <h1 className="mb-6 text-4xl font-bold">{t("home.title")}</h1>
+        <h1 className="mb-6 text-4xl font-bold">{t("common.appName")}</h1>
         <p className="mb-8 text-lg text-muted-foreground">
           {t("home.description")}
         </p>

@@ -1,6 +1,6 @@
 {
   "common": {
-    "appName": "n3n 网页管理",
+    "appName": "n3n Web Management",
     "refresh": "刷新",
     "fetching": "获取中...",
     "close": "关闭",
@@ -8,7 +8,6 @@
     "never": "从未"
   },
   "home": {
-    "title": "n3n 网页管理",
     "description": "一个全面的 n3n 网页管理工具，提供便捷的网络配置和监控功能。"
   },
   "edges": {
