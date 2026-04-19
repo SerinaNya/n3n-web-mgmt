@@ -37,6 +37,7 @@ n3n-web-mgmt/
 - **Network statistics** with charts and metrics
 - **Responsive design** using Tailwind CSS
 - **Error handling** with sonner toast notifications
+- **Dark mode support** with automatic detection and keyboard shortcut (press <kbd>d</kbd> to toggle)
 
 ## Getting Started
 
@@ -95,10 +96,17 @@ The application connects to the n3n management API through the following endpoin
 
 The application uses sonner toast notifications for error handling, providing a user-friendly way to display error messages when API requests fail.
 
+## Screenshots
+
+### Edges Page
+![Edges Page](screenshots/edges-page.png)
+
+### Stats Page
+![Stats Page](screenshots/stats-page.png)
+
 ## Future Enhancements
 
 - Implement authentication
 - Add real-time updates using WebSockets
 - Add more configuration options
 - Improve performance with code splitting
-- Add dark mode support
