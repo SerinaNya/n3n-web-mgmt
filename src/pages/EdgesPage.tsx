@@ -1,4 +1,5 @@
 import { useQuery } from "@tanstack/react-query"
+import { useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
@@ -21,6 +22,7 @@ import {
   DrawerTrigger,
 } from "@/components/ui/drawer"
 import { MoreHorizontalIcon } from "lucide-react"
+import { toast } from "sonner"
 
 type Edge = {
   mode: string
@@ -63,6 +65,13 @@ export function EdgesPage() {
     queryFn: fetchEdgesData,
   })
 
+  // 监听错误状态，显示 toast 错误提示
+  useEffect(() => {
+    if (error) {
+      toast.error("Failed to load edges data")
+    }
+  }, [error])
+
   function getBadgeClass(mode: string) {
     switch (mode) {
       case "p2p":
@@ -81,15 +90,9 @@ export function EdgesPage() {
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold">Edges</h1>
         <Button onClick={() => refetch()} disabled={loading}>
-          {loading ? "Refreshing..." : "Refresh"}
+          {loading ? "Fetching..." : "Refresh"}
         </Button>
       </div>
-
-      {error && (
-        <div className="mb-4 rounded-md bg-red-50 px-4 py-3 text-sm text-red-700 dark:bg-red-950 dark:text-red-300">
-          Failed to load edges data
-        </div>
-      )}
 
       <div className="overflow-x-auto">
         <Table>

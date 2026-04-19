@@ -1,6 +1,6 @@
 # n3n Web Management Tool
 
-A comprehensive web management tool for n3n, built with React, shadcn/ui, and Vite SSR.
+A comprehensive web management tool for n3n, built with React, shadcn/ui, and Vite.
 
 ## Project Structure
 
@@ -8,19 +8,19 @@ A comprehensive web management tool for n3n, built with React, shadcn/ui, and Vi
 n3n-web-mgmt/
 ├── src/
 │   ├── pages/          # Page components
-│   │   ├── HomePage.tsx   # Main landing page
-│   │   └── EdgesPage.tsx  # Network edges table page
+│   │   ├── HomePage.tsx       # Main landing page
+│   │   ├── EdgesPage.tsx      # Network edges table page
+│   │   ├── SupernodesPage.tsx # Supernodes table page
+│   │   └── StatsPage.tsx      # Network statistics page
 │   ├── routes/         # Router configuration
-│   │   └── index.tsx      # Main router setup
+│   │   └── index.tsx          # Main router setup
 │   ├── components/     # React components
-│   │   ├── ui/            # shadcn/ui components
+│   │   ├── ui/                # shadcn/ui components
 │   │   └── theme-provider.tsx
 │   ├── lib/            # Utility functions
-│   ├── entry-ssr.tsx   # SSR entry point
 │   ├── App.tsx         # Main App component
 │   ├── main.tsx        # Client entry point
 │   └── index.css       # Global styles
-├── server.ts           # Express server for SSR
 ├── vite.config.ts      # Vite configuration
 ├── package.json        # Project dependencies
 └── README.md           # This file
@@ -29,10 +29,12 @@ n3n-web-mgmt/
 ## Features
 
 - **Multi-page application** with React Router
-- **Server-Side Rendering (SSR)** using Vite
 - **shadcn/ui components** for modern UI
-- **Network edges table** with mock data
+- **Network edges table** with real-time data
+- **Supernodes table** with real-time data
+- **Network statistics** with charts and metrics
 - **Responsive design** using Tailwind CSS
+- **Error handling** with sonner toast notifications
 
 ## Getting Started
 
@@ -40,6 +42,7 @@ n3n-web-mgmt/
 
 - Node.js 18+
 - pnpm package manager
+- n3n daemon running with management socket
 
 ### Installation
 
@@ -65,33 +68,33 @@ Build the application:
 pnpm run build
 ```
 
-### Run SSR Server
-
-Start the SSR server:
-
-```bash
-node server.ts
-```
-
-The application will be available at http://localhost:3000
+The application will be available at http://localhost:5173 (development) or http://localhost:4173 (preview)
 
 ## Pages
 
-- **Home Page**: Introduction to the n3n Web Management tool
-- **Edges Page**: Table displaying network edge nodes with mock data
+- **Home Page**: Introduction to the n3n Web Management tool with navigation links
+- **Edges Page**: Table displaying network edge nodes with real-time data
+- **Supernodes Page**: Table displaying supernodes with real-time data
+- **Stats Page**: Network statistics with charts and metrics
 
-## Mock Data
+## API Integration
 
-The Edges page currently uses mock data since the actual JSON-RPC endpoint is not yet connected. The mock data simulates the response from the following curl command:
+The application connects to the n3n management API through the following endpoints:
 
-```bash
-curl --unix-socket /run/n3n/test/mgmt http://x/v1 -d '{"jsonrpc": "2.0", "method": "get_edges", "id": 1}'
-```
+- `/api/edges` - Get network edge nodes
+- `/api/supernodes` - Get supernodes
+- `/api/info` - Get daemon information
+- `/api/timestamps` - Get recent activity timestamps
+- `/api/packetstats` - Get packet statistics
+
+## Error Handling
+
+The application uses sonner toast notifications for error handling, providing a user-friendly way to display error messages when API requests fail.
 
 ## Future Enhancements
 
-- Connect to actual JSON-RPC endpoint
-- Add more pages for network configuration
 - Implement authentication
-- Add real-time updates
-- Improve error handling
+- Add real-time updates using WebSockets
+- Add more configuration options
+- Improve performance with code splitting
+- Add dark mode support

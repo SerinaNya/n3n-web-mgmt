@@ -25,6 +25,10 @@ export function Navbar() {
       name: "Supernodes",
       path: "/supernodes",
     },
+    {
+      name: "Stats",
+      path: "/stats",
+    },
   ]
 
   return (

@@ -2,6 +2,7 @@ import { createBrowserRouter } from "react-router-dom"
 import HomePage from "@/pages/HomePage"
 import EdgesPage from "@/pages/EdgesPage"
 import SupernodesPage from "@/pages/SupernodesPage"
+import StatsPage from "@/pages/StatsPage"
 import RootLayout from "@/components/RootLayout"
 
 const router = createBrowserRouter([
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
       {
         path: "/supernodes",
         element: <SupernodesPage />
+      },
+      {
+        path: "/stats",
+        element: <StatsPage />
       }
     ]
   }

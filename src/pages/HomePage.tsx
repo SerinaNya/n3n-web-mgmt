@@ -12,7 +12,12 @@ export function HomePage() {
           <Button asChild>
             <a href="/edges">View Edges</a>
           </Button>
-          <Button variant="secondary">Documentation</Button>
+          <Button asChild>
+            <a href="/supernodes">View Supernodes</a>
+          </Button>
+          <Button asChild>
+            <a href="/stats">View Statistics</a>
+          </Button>
         </div>
       </div>
     </div>
