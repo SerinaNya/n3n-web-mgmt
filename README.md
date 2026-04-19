@@ -11,6 +11,7 @@ n3n-web-mgmt/
 │   │   ├── HomePage.tsx       # Main landing page
 │   │   ├── EdgesPage.tsx      # Network edges table page
 │   │   ├── SupernodesPage.tsx # Supernodes table page
+│   │   ├── CommunitiesPage.tsx # Communities table page
 │   │   └── StatsPage.tsx      # Network statistics page
 │   ├── routes/         # Router configuration
 │   │   └── index.tsx          # Main router setup
@@ -32,6 +33,7 @@ n3n-web-mgmt/
 - **shadcn/ui components** for modern UI
 - **Network edges table** with real-time data
 - **Supernodes table** with real-time data
+- **Communities table** with real-time data
 - **Network statistics** with charts and metrics
 - **Responsive design** using Tailwind CSS
 - **Error handling** with sonner toast notifications
@@ -75,6 +77,7 @@ The application will be available at http://localhost:5173 (development) or http
 - **Home Page**: Introduction to the n3n Web Management tool with navigation links
 - **Edges Page**: Table displaying network edge nodes with real-time data
 - **Supernodes Page**: Table displaying supernodes with real-time data
+- **Communities Page**: Table displaying communities with real-time data
 - **Stats Page**: Network statistics with charts and metrics
 
 ## API Integration
@@ -83,6 +86,7 @@ The application connects to the n3n management API through the following endpoin
 
 - `/api/edges` - Get network edge nodes
 - `/api/supernodes` - Get supernodes
+- `/api/communities` - Get communities
 - `/api/info` - Get daemon information
 - `/api/timestamps` - Get recent activity timestamps
 - `/api/packetstats` - Get packet statistics

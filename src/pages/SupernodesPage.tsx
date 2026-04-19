@@ -130,7 +130,7 @@ export function SupernodesPage() {
                       <TimeAgo timestamp={supernode.last_seen} />
                     </TableCell>
                     <TableCell className="text-right">
-                      <Drawer direction="right">
+                      <Drawer direction="right" handleOnly={true}>
                         <DrawerTrigger asChild>
                           <Button
                             variant="ghost"
@@ -224,7 +224,14 @@ export function SupernodesPage() {
                                           supernode.uptime * 1000
                                         )
                                           .normalize()
-                                          .shiftTo("years", "months", "days", "hours", "minutes", "seconds")
+                                          .shiftTo(
+                                            "years",
+                                            "months",
+                                            "days",
+                                            "hours",
+                                            "minutes",
+                                            "seconds"
+                                          )
                                           .toHuman()}
                                       </p>
                                     </div>

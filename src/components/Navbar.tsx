@@ -14,16 +14,16 @@ export function Navbar() {
 
   const pages = [
     {
-      name: "Home",
-      path: "/",
-    },
-    {
       name: "Edges",
       path: "/edges",
     },
     {
       name: "Supernodes",
       path: "/supernodes",
+    },
+    {
+      name: "Communities",
+      path: "/communities",
     },
     {
       name: "Stats",
@@ -35,7 +35,7 @@ export function Navbar() {
     <nav className="border-b bg-background">
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <div className="flex items-center gap-4">
-          <Link to="/" className="text-xl font-bold">
+          <Link to="/" className="font-bold">
             n3n Web Management
           </Link>
         </div>
