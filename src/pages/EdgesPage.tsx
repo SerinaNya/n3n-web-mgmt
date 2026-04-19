@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/card"
 import { MoreHorizontalIcon } from "lucide-react"
 import { toast } from "sonner"
+import { TimeAgo } from "@/components/TimeAgo"
 
 type Edge = {
   mode: string
@@ -157,7 +158,7 @@ export function EdgesPage() {
                     <TableCell>{edge.sockaddr}</TableCell>
                     <TableCell>{edge.desc}</TableCell>
                     <TableCell>
-                      {new Date(edge.last_seen * 1000).toLocaleString()}
+                      <TimeAgo timestamp={edge.last_seen} />
                     </TableCell>
                     <TableCell className="text-right">
                       <Drawer direction="right">
@@ -250,7 +251,7 @@ export function EdgesPage() {
                                       <p className="text-sm font-medium text-muted-foreground">
                                         Timeout
                                       </p>
-                                      <p className="mt-1">{edge.timeout}</p>
+                                      <p className="mt-1">{edge.timeout} s</p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
@@ -260,12 +261,10 @@ export function EdgesPage() {
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
-                                        Time Alloc
+                                        Time Allocated
                                       </p>
                                       <p className="mt-1">
-                                        {edge.time_alloc === 0 ? "Never" : new Date(
-                                          edge.time_alloc * 1000
-                                        ).toLocaleString()}
+                                        <TimeAgo timestamp={edge.time_alloc} />
                                       </p>
                                     </div>
                                     <div>
@@ -273,9 +272,7 @@ export function EdgesPage() {
                                         Last P2P
                                       </p>
                                       <p className="mt-1">
-                                        {edge.last_p2p === 0 ? "Never" : new Date(
-                                          edge.last_p2p * 1000
-                                        ).toLocaleString()}
+                                        <TimeAgo timestamp={edge.last_p2p} />
                                       </p>
                                     </div>
                                     <div>
@@ -283,9 +280,7 @@ export function EdgesPage() {
                                         Last Sent Query
                                       </p>
                                       <p className="mt-1">
-                                        {edge.last_sent_query === 0 ? "Never" : new Date(
-                                          edge.last_sent_query * 1000
-                                        ).toLocaleString()}
+                                        <TimeAgo timestamp={edge.last_sent_query} />
                                       </p>
                                     </div>
                                     <div>
@@ -293,9 +288,7 @@ export function EdgesPage() {
                                         Last Seen
                                       </p>
                                       <p className="mt-1">
-                                        {edge.last_seen === 0 ? "Never" : new Date(
-                                          edge.last_seen * 1000
-                                        ).toLocaleString()}
+                                        <TimeAgo timestamp={edge.last_seen} />
                                       </p>
                                     </div>
                                   </div>

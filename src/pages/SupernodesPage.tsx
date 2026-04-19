@@ -21,12 +21,11 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
-import {
-  Card,
-  CardContent,
-} from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import { MoreHorizontalIcon } from "lucide-react"
 import { toast } from "sonner"
+import { TimeAgo } from "@/components/TimeAgo"
+import { Duration } from "luxon"
 
 type Supernode = {
   version: string
@@ -81,12 +80,12 @@ export function SupernodesPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="text-center w-20">Status</TableHead>
+              <TableHead className="w-20 text-center">Status</TableHead>
               <TableHead>MAC Address</TableHead>
               <TableHead>Socket Address</TableHead>
               <TableHead>Selection</TableHead>
               <TableHead>Last Seen</TableHead>
-              <TableHead className="text-right w-20">Properties</TableHead>
+              <TableHead className="w-20 text-right">Properties</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -95,7 +94,7 @@ export function SupernodesPage() {
                 Array.from({ length: 3 }).map((_, index) => (
                   <TableRow key={index}>
                     <TableCell className="text-center">
-                      <Skeleton className="h-4 w-8 rounded-full mx-auto" />
+                      <Skeleton className="mx-auto h-4 w-8 rounded-full" />
                     </TableCell>
                     <TableCell>
                       <Skeleton className="h-4 w-32" />
@@ -110,7 +109,7 @@ export function SupernodesPage() {
                       <Skeleton className="h-4 w-36" />
                     </TableCell>
                     <TableCell className="text-right">
-                      <Skeleton className="h-4 w-4 rounded-full ml-auto" />
+                      <Skeleton className="ml-auto h-4 w-4 rounded-full" />
                     </TableCell>
                   </TableRow>
                 ))
@@ -128,7 +127,7 @@ export function SupernodesPage() {
                     <TableCell>{supernode.sockaddr}</TableCell>
                     <TableCell>{supernode.selection}</TableCell>
                     <TableCell>
-                      {new Date(supernode.last_seen * 1000).toLocaleString()}
+                      <TimeAgo timestamp={supernode.last_seen} />
                     </TableCell>
                     <TableCell className="text-right">
                       <Drawer direction="right">
@@ -160,7 +159,9 @@ export function SupernodesPage() {
                                       <p className="text-sm font-medium text-muted-foreground">
                                         Version
                                       </p>
-                                      <p className="mt-1">{supernode.version}</p>
+                                      <p className="mt-1">
+                                        {supernode.version}
+                                      </p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
@@ -175,40 +176,57 @@ export function SupernodesPage() {
                                         Purgeable
                                       </p>
                                       <p className="mt-1">
-                                        {supernode.purgeable === 1 ? "Yes" : "No"}
+                                        {supernode.purgeable === 1
+                                          ? "Yes"
+                                          : "No"}
                                       </p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
                                         MAC Address
                                       </p>
-                                      <p className="mt-1">{supernode.macaddr}</p>
+                                      <p className="mt-1">
+                                        {supernode.macaddr}
+                                      </p>
                                     </div>
                                     <div className="col-span-2">
                                       <p className="text-sm font-medium text-muted-foreground">
                                         Socket Address
                                       </p>
-                                      <p className="mt-1">{supernode.sockaddr}</p>
+                                      <p className="mt-1">
+                                        {supernode.sockaddr}
+                                      </p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
                                         Selection
                                       </p>
-                                      <p className="mt-1">{supernode.selection}</p>
+                                      <p className="mt-1">
+                                        {supernode.selection}
+                                      </p>
                                     </div>
                                     <div>
                                       <p className="text-sm font-medium text-muted-foreground">
                                         Last Seen
                                       </p>
                                       <p className="mt-1">
-                                        {new Date(supernode.last_seen * 1000).toLocaleString()}
+                                        <TimeAgo
+                                          timestamp={supernode.last_seen}
+                                        />
                                       </p>
                                     </div>
-                                    <div>
+                                    <div className="col-span-2">
                                       <p className="text-sm font-medium text-muted-foreground">
                                         Uptime
                                       </p>
-                                      <p className="mt-1">{supernode.uptime}</p>
+                                      <p className="mt-1">
+                                        {Duration.fromMillis(
+                                          supernode.uptime * 1000
+                                        )
+                                          .normalize()
+                                          .shiftTo("years", "months", "days", "hours", "minutes", "seconds")
+                                          .toHuman()}
+                                      </p>
                                     </div>
                                   </div>
                                 </CardContent>

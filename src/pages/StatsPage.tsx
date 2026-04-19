@@ -22,6 +22,7 @@ import {
   type ChartConfig,
 } from "@/components/ui/chart"
 import { toast } from "sonner"
+import { TimeAgo } from "@/components/TimeAgo"
 
 type DaemonInfo = {
   version: string
@@ -347,9 +348,7 @@ export function StatsPage() {
                             Last Register Request
                           </p>
                           <p className="mt-1">
-                            {timestamps.last_register_req > 0 
-                              ? new Date(timestamps.last_register_req * 1000).toLocaleString() 
-                              : 'Never'}
+                            <TimeAgo timestamp={timestamps.last_register_req} />
                           </p>
                         </div>
                         <div>
@@ -357,9 +356,7 @@ export function StatsPage() {
                             Last RX P2P
                           </p>
                           <p className="mt-1">
-                            {timestamps.last_rx_p2p > 0 
-                              ? new Date(timestamps.last_rx_p2p * 1000).toLocaleString() 
-                              : 'Never'}
+                            <TimeAgo timestamp={timestamps.last_rx_p2p} />
                           </p>
                         </div>
                       </div>
@@ -369,9 +366,7 @@ export function StatsPage() {
                             Last RX Super
                           </p>
                           <p className="mt-1">
-                            {timestamps.last_rx_super > 0 
-                              ? new Date(timestamps.last_rx_super * 1000).toLocaleString() 
-                              : 'Never'}
+                            <TimeAgo timestamp={timestamps.last_rx_super} />
                           </p>
                         </div>
                         <div>
@@ -379,9 +374,7 @@ export function StatsPage() {
                             Last Sweep
                           </p>
                           <p className="mt-1">
-                            {timestamps.last_sweep > 0 
-                              ? new Date(timestamps.last_sweep * 1000).toLocaleString() 
-                              : 'Never'}
+                            <TimeAgo timestamp={timestamps.last_sweep} />
                           </p>
                         </div>
                       </div>
@@ -394,9 +387,7 @@ export function StatsPage() {
                           Last SN Forward
                         </p>
                         <p className="mt-1">
-                          {timestamps.last_sn_fwd > 0 
-                            ? new Date(timestamps.last_sn_fwd * 1000).toLocaleString() 
-                            : 'Never'}
+                          <TimeAgo timestamp={timestamps.last_sn_fwd} />
                         </p>
                       </div>
                       <div>
@@ -404,9 +395,7 @@ export function StatsPage() {
                           Last SN Register
                         </p>
                         <p className="mt-1">
-                          {timestamps.last_sn_reg > 0 
-                            ? new Date(timestamps.last_sn_reg * 1000).toLocaleString() 
-                            : 'Never'}
+                          <TimeAgo timestamp={timestamps.last_sn_reg} />
                         </p>
                       </div>
                     </div>
@@ -416,7 +405,7 @@ export function StatsPage() {
                       Start Time
                     </p>
                     <p className="mt-1">
-                      {new Date(timestamps.start_time * 1000).toLocaleString()}
+                      <TimeAgo timestamp={timestamps.start_time} />
                     </p>
                   </div>
                 </div>
