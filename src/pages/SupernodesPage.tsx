@@ -21,6 +21,10 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "@/components/ui/drawer"
+import {
+  Card,
+  CardContent,
+} from "@/components/ui/card"
 import { MoreHorizontalIcon } from "lucide-react"
 import { toast } from "sonner"
 
@@ -77,12 +81,12 @@ export function SupernodesPage() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>Status</TableHead>
+              <TableHead className="text-center w-20">Status</TableHead>
               <TableHead>MAC Address</TableHead>
               <TableHead>Socket Address</TableHead>
               <TableHead>Selection</TableHead>
               <TableHead>Last Seen</TableHead>
-              <TableHead className="text-right">Details</TableHead>
+              <TableHead className="text-right w-20">Properties</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -90,8 +94,8 @@ export function SupernodesPage() {
               ? // 显示 skeleton 加载状态
                 Array.from({ length: 3 }).map((_, index) => (
                   <TableRow key={index}>
-                    <TableCell>
-                      <Skeleton className="h-4 w-16 rounded-full" />
+                    <TableCell className="text-center">
+                      <Skeleton className="h-4 w-8 rounded-full mx-auto" />
                     </TableCell>
                     <TableCell>
                       <Skeleton className="h-4 w-32" />
@@ -106,14 +110,14 @@ export function SupernodesPage() {
                       <Skeleton className="h-4 w-36" />
                     </TableCell>
                     <TableCell className="text-right">
-                      <Skeleton className="h-4 w-4 rounded-full" />
+                      <Skeleton className="h-4 w-4 rounded-full ml-auto" />
                     </TableCell>
                   </TableRow>
                 ))
               : // 显示实际数据
                 supernodes.map((supernode, index) => (
                   <TableRow key={index}>
-                    <TableCell>
+                    <TableCell className="text-center">
                       {supernode.current === 1 && (
                         <Badge className="bg-green-50 text-green-700 dark:bg-green-950 dark:text-green-300">
                           Active
@@ -142,12 +146,74 @@ export function SupernodesPage() {
                         </DrawerTrigger>
                         <DrawerContent className="sm:max-w-125">
                           <DrawerHeader>
-                            <DrawerTitle>Supernode Details</DrawerTitle>
+                            <DrawerTitle>Supernode Properties</DrawerTitle>
                             <DrawerDescription>
-                              Detailed information about this supernode
+                              All properties for this supernode
                             </DrawerDescription>
                           </DrawerHeader>
                           <div className="no-scrollbar space-y-4 overflow-y-auto">
+                            <div className="mt-2 space-y-4 px-4">
+                              <Card>
+                                <CardContent>
+                                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                                    <div>
+                                      <p className="text-sm font-medium text-muted-foreground">
+                                        Version
+                                      </p>
+                                      <p className="mt-1">{supernode.version}</p>
+                                    </div>
+                                    <div>
+                                      <p className="text-sm font-medium text-muted-foreground">
+                                        Current
+                                      </p>
+                                      <p className="mt-1">
+                                        {supernode.current === 1 ? "Yes" : "No"}
+                                      </p>
+                                    </div>
+                                    <div>
+                                      <p className="text-sm font-medium text-muted-foreground">
+                                        Purgeable
+                                      </p>
+                                      <p className="mt-1">
+                                        {supernode.purgeable === 1 ? "Yes" : "No"}
+                                      </p>
+                                    </div>
+                                    <div>
+                                      <p className="text-sm font-medium text-muted-foreground">
+                                        MAC Address
+                                      </p>
+                                      <p className="mt-1">{supernode.macaddr}</p>
+                                    </div>
+                                    <div className="col-span-2">
+                                      <p className="text-sm font-medium text-muted-foreground">
+                                        Socket Address
+                                      </p>
+                                      <p className="mt-1">{supernode.sockaddr}</p>
+                                    </div>
+                                    <div>
+                                      <p className="text-sm font-medium text-muted-foreground">
+                                        Selection
+                                      </p>
+                                      <p className="mt-1">{supernode.selection}</p>
+                                    </div>
+                                    <div>
+                                      <p className="text-sm font-medium text-muted-foreground">
+                                        Last Seen
+                                      </p>
+                                      <p className="mt-1">
+                                        {new Date(supernode.last_seen * 1000).toLocaleString()}
+                                      </p>
+                                    </div>
+                                    <div>
+                                      <p className="text-sm font-medium text-muted-foreground">
+                                        Uptime
+                                      </p>
+                                      <p className="mt-1">{supernode.uptime}</p>
+                                    </div>
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            </div>
                             <pre className="overflow-auto rounded-md bg-muted p-4 text-sm">
                               {JSON.stringify(supernode, null, 2)}
                             </pre>
