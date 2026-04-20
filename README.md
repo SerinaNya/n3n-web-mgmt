@@ -46,7 +46,6 @@ n3n-web-mgmt/
 ├── package.json        # Project dependencies
 ├── pnpm-lock.yaml      # pnpm lock file
 ├── pnpm-workspace.yaml # pnpm workspace configuration
-├── skills-lock.json    # Skills lock file
 ├── tsconfig.app.json   # TypeScript app configuration
 ├── tsconfig.json       # TypeScript configuration
 ├── tsconfig.node.json  # TypeScript node configuration

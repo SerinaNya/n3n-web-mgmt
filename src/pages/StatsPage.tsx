@@ -36,13 +36,17 @@ type DaemonInfo = {
 }
 
 type Timestamps = {
-  last_register_req: number
-  last_rx_p2p: number
-  last_rx_super: number
-  last_sweep: number
-  last_sn_fwd: number
-  last_sn_reg: number
+  last_register_req?: number
+  last_rx_p2p?: number
+  last_rx_super?: number
+  last_sweep?: number
+  last_sn_fwd?: number
+  last_sn_reg?: number
   start_time: number
+  last_p2p?: number
+  last_super?: number
+  last_fwd?: number
+  last_reg_super?: number
 }
 
 type PacketStat = {
@@ -53,8 +57,12 @@ type PacketStat = {
 }
 
 // 获取守护进程信息的函数
-async function fetchDaemonInfo(): Promise<DaemonInfo> {
+async function fetchDaemonInfo(): Promise<DaemonInfo | null> {
   const response = await fetch("/api/info")
+  if (response.status === 404) {
+    // 404 表示当前版本的守护进程不支持守护进程信息
+    return null
+  }
   if (!response.ok) {
     throw new Error("Failed to fetch daemon info")
   }
@@ -113,7 +121,7 @@ export function StatsPage() {
     isLoading: infoLoading,
     error: infoError,
     refetch: refetchInfo,
-  } = useQuery({
+  } = useQuery<DaemonInfo | null>({
     queryKey: ["daemonInfo"],
     queryFn: fetchDaemonInfo,
   })
@@ -180,8 +188,13 @@ export function StatsPage() {
     <div className="p-6">
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-bold">{t("stats.title")}</h1>
-        <Button onClick={handleRefresh} disabled={infoLoading || timestampsLoading || statsLoading}>
-          {infoLoading || timestampsLoading || statsLoading ? t("common.fetching") : t("common.refresh")}
+        <Button
+          onClick={handleRefresh}
+          disabled={infoLoading || timestampsLoading || statsLoading}
+        >
+          {infoLoading || timestampsLoading || statsLoading
+            ? t("common.fetching")
+            : t("common.refresh")}
         </Button>
       </div>
 
@@ -189,11 +202,11 @@ export function StatsPage() {
       <div className="mb-8">
         <h2 className="mb-4 text-xl font-semibold">{t("stats.daemonInfo")}</h2>
         <div className="flex flex-wrap gap-6">
-          <Card className="flex-1 min-w-75">
+          <Card className="min-w-75 flex-1">
             <CardHeader>
-              <CardTitle>{t("stats.currentDaemon")}</CardTitle>
+              <CardTitle>{t("stats.daemon")}</CardTitle>
               <CardDescription>
-                {t("stats.currentDaemonDescription")}
+                {t("stats.daemonDescription")}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -230,6 +243,12 @@ export function StatsPage() {
                     </div>
                   </div>
                 </div>
+              ) : daemonInfo === null ? (
+                  <Empty className="h-full">
+                    <EmptyDescription>
+                      {t("stats.daemonInfoNotImplemented")}
+                    </EmptyDescription>
+                  </Empty>
               ) : daemonInfo ? (
                 <div className="space-y-4">
                   <div className="grid grid-cols-2 gap-4">
@@ -289,7 +308,7 @@ export function StatsPage() {
               ) : null}
             </CardContent>
           </Card>
-          <Card className="flex-1 min-w-75">
+          <Card className="min-w-75 flex-1">
             <CardHeader>
               <CardTitle>{t("stats.timestamps")}</CardTitle>
               <CardDescription>
@@ -332,66 +351,92 @@ export function StatsPage() {
                 </div>
               ) : timestamps ? (
                 <div className="space-y-4">
-                  {daemonInfo?.is_edge === 1 && (
-                    <>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground">
-                            {t("stats.lastRegisterRequest")}
-                          </p>
-                          <p className="mt-1">
-                            <TimeAgo timestamp={timestamps.last_register_req} />
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground">
-                            {t("stats.lastRXP2P")}
-                          </p>
-                          <p className="mt-1">
-                            <TimeAgo timestamp={timestamps.last_rx_p2p} />
-                          </p>
-                        </div>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    {timestamps.last_register_req && (
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">
+                          {t("stats.lastRegisterRequest")}
+                        </p>
+                        <p className="mt-1">
+                          <TimeAgo timestamp={timestamps.last_register_req} />
+                        </p>
                       </div>
-                      <div className="grid grid-cols-2 gap-4">
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground">
-                            {t("stats.lastRXSuper")}
-                          </p>
-                          <p className="mt-1">
-                            <TimeAgo timestamp={timestamps.last_rx_super} />
-                          </p>
-                        </div>
-                        <div>
-                          <p className="text-sm font-medium text-muted-foreground">
-                            {t("stats.lastSweep")}
-                          </p>
-                          <p className="mt-1">
-                            <TimeAgo timestamp={timestamps.last_sweep} />
-                          </p>
-                        </div>
+                    )}
+                    {(timestamps.last_rx_p2p !== undefined ||
+                      timestamps.last_p2p !== undefined) && (
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">
+                          {t("stats.lastRXP2P")}
+                        </p>
+                        <p className="mt-1">
+                          <TimeAgo
+                            timestamp={
+                              (timestamps.last_rx_p2p ||
+                                timestamps.last_p2p) as number
+                            }
+                          />
+                        </p>
                       </div>
-                    </>
-                  )}
-                  {daemonInfo?.is_supernode === 1 && (
-                    <div className="grid grid-cols-2 gap-4">
+                    )}
+                    {(timestamps.last_rx_super !== undefined ||
+                      timestamps.last_super !== undefined) && (
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">
+                          {t("stats.lastRXSuper")}
+                        </p>
+                        <p className="mt-1">
+                          <TimeAgo
+                            timestamp={
+                              (timestamps.last_rx_super ||
+                                timestamps.last_super) as number
+                            }
+                          />
+                        </p>
+                      </div>
+                    )}
+                    {timestamps.last_sweep && (
+                      <div>
+                        <p className="text-sm font-medium text-muted-foreground">
+                          {t("stats.lastSweep")}
+                        </p>
+                        <p className="mt-1">
+                          <TimeAgo timestamp={timestamps.last_sweep} />
+                        </p>
+                      </div>
+                    )}
+                    {(timestamps.last_sn_fwd !== undefined ||
+                      timestamps.last_fwd !== undefined) && (
                       <div>
                         <p className="text-sm font-medium text-muted-foreground">
                           {t("stats.lastSNForward")}
                         </p>
                         <p className="mt-1">
-                          <TimeAgo timestamp={timestamps.last_sn_fwd} />
+                          <TimeAgo
+                            timestamp={
+                              (timestamps.last_sn_fwd ||
+                                timestamps.last_fwd) as number
+                            }
+                          />
                         </p>
                       </div>
+                    )}
+                    {(timestamps.last_sn_reg !== undefined ||
+                      timestamps.last_reg_super !== undefined) && (
                       <div>
                         <p className="text-sm font-medium text-muted-foreground">
                           {t("stats.lastSNRegister")}
                         </p>
                         <p className="mt-1">
-                          <TimeAgo timestamp={timestamps.last_sn_reg} />
+                          <TimeAgo
+                            timestamp={
+                              (timestamps.last_sn_reg ||
+                                timestamps.last_reg_super) as number
+                            }
+                          />
                         </p>
                       </div>
-                    </div>
-                  )}
+                    )}
+                  </div>
                   <div>
                     <p className="text-sm font-medium text-muted-foreground">
                       {t("stats.startTime")}
@@ -414,7 +459,9 @@ export function StatsPage() {
         {/* 饼图部分 */}
         {!(daemonInfo?.is_supernode === 1) && (
           <div className="mb-8">
-            <h3 className="mb-4 text-lg font-medium">{t("stats.trafficDistribution")}</h3>
+            <h3 className="mb-4 text-lg font-medium">
+              {t("stats.trafficDistribution")}
+            </h3>
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
               {statsLoading
                 ? Array.from({ length: 3 }).map((_, index) => (
@@ -458,7 +505,7 @@ export function StatsPage() {
                                     },
                                   } satisfies ChartConfig
                                 }
-                                className="w-full h-full max-h-62.5 pb-0 [&_.recharts-pie-label-text]:fill-foreground"
+                                className="h-full max-h-62.5 w-full pb-0 [&_.recharts-pie-label-text]:fill-foreground"
                               >
                                 <PieChart>
                                   <ChartTooltip
@@ -489,58 +536,62 @@ export function StatsPage() {
         )}
 
         {/* 卡片部分 */}
-        <div>
-          <h3 className="mb-4 text-lg font-medium">{t("stats.otherStats")}</h3>
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-            {statsLoading
-              ? Array.from({ length: 3 }).map((_, index) => (
-                  <Card key={index}>
-                    <CardHeader>
-                      <CardTitle>
-                        <Skeleton className="h-4 w-32" />
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-2">
-                        <Skeleton className="h-4 w-64" />
-                        <Skeleton className="h-4 w-64" />
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))
-              : cardStats.map((stat) => (
-                  <Card key={stat.type}>
-                    <CardHeader>
-                      <CardTitle>
-                        {t(`stats.${stat.type}`) || stat.type}
-                      </CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex flex-row gap-2">
-                        {stat.tx_pkt !== undefined && (
-                          <Item>
-                            <ItemTitle>{t("stats.packetsTX")}</ItemTitle>
-                            <ItemDescription>{stat.tx_pkt}</ItemDescription>
-                          </Item>
-                        )}
-                        {stat.rx_pkt !== undefined && (
-                          <Item>
-                            <ItemTitle>{t("stats.packetsRX")}</ItemTitle>
-                            <ItemDescription>{stat.rx_pkt}</ItemDescription>
-                          </Item>
-                        )}
-                        {stat.nak !== undefined && (
-                          <Item>
-                            <ItemTitle>NAK</ItemTitle>
-                            <ItemDescription>{stat.nak}</ItemDescription>
-                          </Item>
-                        )}
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+        {cardStats.length > 0 && (
+          <div>
+            <h3 className="mb-4 text-lg font-medium">
+              {t("stats.otherStats")}
+            </h3>
+            <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+              {statsLoading
+                ? Array.from({ length: 3 }).map((_, index) => (
+                    <Card key={index}>
+                      <CardHeader>
+                        <CardTitle>
+                          <Skeleton className="h-4 w-32" />
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-2">
+                          <Skeleton className="h-4 w-64" />
+                          <Skeleton className="h-4 w-64" />
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))
+                : cardStats.map((stat) => (
+                    <Card key={stat.type}>
+                      <CardHeader>
+                        <CardTitle>
+                          {t(`stats.${stat.type}`) || stat.type}
+                        </CardTitle>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="flex flex-row gap-2">
+                          {stat.tx_pkt !== undefined && (
+                            <Item>
+                              <ItemTitle>{t("stats.packetsTX")}</ItemTitle>
+                              <ItemDescription>{stat.tx_pkt}</ItemDescription>
+                            </Item>
+                          )}
+                          {stat.rx_pkt !== undefined && (
+                            <Item>
+                              <ItemTitle>{t("stats.packetsRX")}</ItemTitle>
+                              <ItemDescription>{stat.rx_pkt}</ItemDescription>
+                            </Item>
+                          )}
+                          {stat.nak !== undefined && (
+                            <Item>
+                              <ItemTitle>NAK</ItemTitle>
+                              <ItemDescription>{stat.nak}</ItemDescription>
+                            </Item>
+                          )}
+                        </div>
+                      </CardContent>
+                    </Card>
+                  ))}
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   )
