@@ -110,7 +110,7 @@ export function EdgesPage() {
               只有当 community 存在时才显示 community 列头
               如果第 0 个 edge 没有 community 就表明所有的 edge 都没有 community 
               */}
-              {edges[0].community && (
+              {edges[0]?.community !== undefined && (
                 <TableHead>{t("edges.community")}</TableHead>
               )}
               <TableHead>{t("edges.ip4addr")}</TableHead>
