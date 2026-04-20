@@ -162,13 +162,12 @@ export function StatsPage() {
   }, [infoError, timestampsError, statsError, t])
 
   // 根据 daemon 类型过滤统计数据
-  const filteredStats = daemonInfo
-    ? daemonInfo.is_supernode === 1
+  const filteredStats = 
+    daemonInfo?.is_supernode === 1
       ? packetStats.filter((stat) => stat.type.startsWith("sn_"))
-      : daemonInfo.is_edge === 1
+      : daemonInfo?.is_edge === 1
         ? packetStats.filter((stat) => !stat.type.startsWith("sn_"))
         : packetStats
-    : packetStats
 
   // 过滤出适合用饼图展示的 stats（同时拥有 tx_pkt 和 rx_pkt）
   const chartStats = filteredStats.filter(
@@ -364,8 +363,8 @@ export function StatsPage() {
                         </p>
                       </div>
                     )}
-                    {(timestamps.last_rx_p2p !== undefined ||
-                      timestamps.last_p2p !== undefined) && (
+                    {((timestamps.last_rx_p2p !== undefined || timestamps.last_p2p !== undefined) && 
+                      (daemonInfo === null || daemonInfo?.is_edge === 1)) && (
                       <div>
                         <p className="text-sm font-medium text-muted-foreground">
                           {t("stats.lastRXP2P")}
@@ -373,15 +372,15 @@ export function StatsPage() {
                         <p className="mt-1">
                           <TimeAgo
                             timestamp={
-                              (timestamps.last_rx_p2p ||
+                              (timestamps.last_rx_p2p ??
                                 timestamps.last_p2p) as number
                             }
                           />
                         </p>
                       </div>
                     )}
-                    {(timestamps.last_rx_super !== undefined ||
-                      timestamps.last_super !== undefined) && (
+                    {((timestamps.last_rx_super !== undefined || timestamps.last_super !== undefined) && 
+                      (daemonInfo === null || daemonInfo?.is_edge === 1)) && (
                       <div>
                         <p className="text-sm font-medium text-muted-foreground">
                           {t("stats.lastRXSuper")}
@@ -389,7 +388,7 @@ export function StatsPage() {
                         <p className="mt-1">
                           <TimeAgo
                             timestamp={
-                              (timestamps.last_rx_super ||
+                              (timestamps.last_rx_super ??
                                 timestamps.last_super) as number
                             }
                           />
@@ -406,8 +405,9 @@ export function StatsPage() {
                         </p>
                       </div>
                     )}
-                    {(timestamps.last_sn_fwd !== undefined ||
-                      timestamps.last_fwd !== undefined) && (
+                    {((timestamps.last_sn_fwd !== undefined || timestamps.last_fwd !== undefined) && 
+                      (daemonInfo === null || daemonInfo?.is_supernode === 1) && 
+                      ((timestamps.last_sn_fwd !== undefined && timestamps.last_sn_fwd > 0) || (timestamps.last_fwd !== undefined && timestamps.last_fwd > 0))) && (
                       <div>
                         <p className="text-sm font-medium text-muted-foreground">
                           {t("stats.lastSNForward")}
@@ -415,15 +415,16 @@ export function StatsPage() {
                         <p className="mt-1">
                           <TimeAgo
                             timestamp={
-                              (timestamps.last_sn_fwd ||
+                              (timestamps.last_sn_fwd ??
                                 timestamps.last_fwd) as number
                             }
                           />
                         </p>
                       </div>
                     )}
-                    {(timestamps.last_sn_reg !== undefined ||
-                      timestamps.last_reg_super !== undefined) && (
+                    {((timestamps.last_sn_reg !== undefined || timestamps.last_reg_super !== undefined) && 
+                      (daemonInfo === null || daemonInfo?.is_supernode === 1) && 
+                      ((timestamps.last_sn_reg !== undefined && timestamps.last_sn_reg > 0) || (timestamps.last_reg_super !== undefined && timestamps.last_reg_super > 0))) && (
                       <div>
                         <p className="text-sm font-medium text-muted-foreground">
                           {t("stats.lastSNRegister")}
@@ -431,7 +432,7 @@ export function StatsPage() {
                         <p className="mt-1">
                           <TimeAgo
                             timestamp={
-                              (timestamps.last_sn_reg ||
+                              (timestamps.last_sn_reg ??
                                 timestamps.last_reg_super) as number
                             }
                           />
