@@ -93,7 +93,7 @@ export function EdgesPage() {
   return (
     <div className="p-6">
       <div className="mb-6 flex items-center justify-between">
-        <h1 className="text-2xl font-bold">{t("edges.title")}</h1>
+        <h1 className="text-2xl font-bold">{t("edges.title")} <span className="text-sm text-muted-foreground">({edges.length})</span></h1>
         <Button onClick={() => refetch()} disabled={loading}>
           {loading ? t("common.fetching") : t("common.refresh")}
         </Button>
