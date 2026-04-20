@@ -117,16 +117,6 @@ export function StatsPage() {
   const { t } = useTranslation()
   
   const {
-    data: daemonInfo,
-    isLoading: infoLoading,
-    error: infoError,
-    refetch: refetchInfo,
-  } = useQuery<DaemonInfo | null>({
-    queryKey: ["daemonInfo"],
-    queryFn: fetchDaemonInfo,
-  })
-
-  const {
     data: timestamps,
     isLoading: timestampsLoading,
     error: timestampsError,
@@ -144,6 +134,18 @@ export function StatsPage() {
   } = useQuery({
     queryKey: ["packetStats"],
     queryFn: fetchPacketStats,
+  })
+  
+  // 最终才进行守护进程信息查询
+  // 因为如果此功能未被实现的话会卡住页面加载
+  const {
+    data: daemonInfo,
+    isLoading: infoLoading,
+    error: infoError,
+    refetch: refetchInfo,
+  } = useQuery<DaemonInfo | null>({
+    queryKey: ["daemonInfo"],
+    queryFn: fetchDaemonInfo,
   })
 
   // 监听错误状态，显示 toast 错误提示
